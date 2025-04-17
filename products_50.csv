@@ -1,0 +1,51 @@
+ID,Category,Brand,Price,Stock
+1000,Electronics,Sony,117.67,81
+1001,Electronics,Sony,305.13,91
+1002,Electronics,Samsung,405.81,76
+1003,Electronics,LG,405.77,29
+1004,Electronics,LG,417.43,70
+1005,Electronics,Dell,392.86,70
+1006,Electronics,Apple,99.69,95
+1007,Electronics,Dell,151.37,40
+1008,Electronics,Dell,100.87,77
+1009,Electronics,Sony,42.64,74
+1010,Clothing,Adidas,83.29,22
+1011,Clothing,Levi's,293.23,29
+1012,Clothing,Adidas,245.35,81
+1013,Clothing,H&M,391.15,14
+1014,Clothing,H&M,7.5,35
+1015,Clothing,Zara,243.23,4
+1016,Clothing,Nike,429.64,4
+1017,Clothing,Levi's,409.21,41
+1018,Clothing,Levi's,454.24,99
+1019,Clothing,Adidas,76.7,92
+1020,Books,Penguin,349.67,75
+1021,Books,Simon & Schuster,332.75,56
+1022,Books,Penguin,219.56,65
+1023,Books,Random House,295.74,99
+1024,Books,Penguin,175.58,8
+1025,Books,Macmillan,153.46,66
+1026,Books,Simon & Schuster,315.35,72
+1027,Books,Penguin,45.37,90
+1028,Books,Macmillan,49.19,44
+1029,Books,Penguin,186.24,76
+1030,Home & Kitchen,Hamilton Beach,280.2,34
+1031,Home & Kitchen,IKEA,91.48,98
+1032,Home & Kitchen,IKEA,25.42,53
+1033,Home & Kitchen,IKEA,351.52,15
+1034,Home & Kitchen,T-fal,26.18,52
+1035,Home & Kitchen,Hamilton Beach,268.06,13
+1036,Home & Kitchen,Whirlpool,57.63,87
+1037,Home & Kitchen,Hamilton Beach,43.26,86
+1038,Home & Kitchen,Philips,398.06,0
+1039,Home & Kitchen,Hamilton Beach,391.01,14
+1040,Sports,Reebok,117.95,96
+1041,Sports,ASICS,489.94,51
+1042,Sports,ASICS,107.18,25
+1043,Sports,Decathlon,454.67,87
+1044,Sports,Puma,149.42,2
+1045,Sports,Decathlon,234.95,33
+1046,Sports,Reebok,174.93,20
+1047,Sports,Under Armour,17.24,48
+1048,Sports,ASICS,392.68,42
+1049,Sports,Under Armour,491.52,11
