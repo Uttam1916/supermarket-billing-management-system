@@ -24,6 +24,27 @@ cartitem cart[MAX_CART_ITEMS];
 int totalproducts=0;
 int cartsize=0;
 
+int LoadItems(const char *filename);
+void OpenCart();
+void addtocart(int id, int qty);
+int noofunicate(char categories[][50]);
+void sort_products(product *arr, int n, int by_price);
+void DisplayProducts();
+void DisplayProductsManager();
+void SearchID();
+void Addproduct(const char *filename);  // <--- Add this
+void Login();
+void exits();
+void MainMenu();
+
+
+int main(){
+    totalproducts= LoadItems("products_50.csv");
+    MainMenu();
+
+    return 0;
+}
+
 int  LoadItems(const char *filename){
     FILE *file=fopen(filename,"r");
     if(!file){
@@ -112,7 +133,6 @@ void addtocart(int id, int qty) {
     printf("Product not found\n");
 }
 
-
 int noofunicate(char categories[][50]){
     int count=0;
     for(int i=0; i<totalproducts; i++){
@@ -150,25 +170,98 @@ void DisplayProducts(){
     }
 
     char *selected=categories[choice-1];
-    printf("\n--- %s Products ---\n",selected);
-    printf("ID | Brand | Price | Stock\n");
-    for(int i=0; i< totalproducts;i++){
-        if(strcmp(products[i].category,selected)==0)
-        printf("%d | %s | %f | %d\n",products[i].id,products[i].brand,products[i].price,products[i].stock);
+    product filtered[50];
+    int fcount = 0;
+
+    for (int i = 0; i < totalproducts; i++) {
+        if (strcmp(products[i].category, selected) == 0) {
+            filtered[fcount++] = products[i];
+        }
     }
 
-    int id,qty;
-    printf("Enter the ID of the product you want to add to your cart( 0 to return):\n");
-    scanf("%d",&id);
-    if(id<=0){
+    int sort_choice;
+    printf("Sort by: 1. Price  2. Stock  (Any other key for no sorting): ");
+    scanf("%d", &sort_choice);
+    if (sort_choice == 1 || sort_choice == 2) {
+        sort_products(filtered, fcount, sort_choice == 1);
+    }
+
+    printf("\n--- %s Products ---\n",selected);
+    printf("ID | Brand | Price | Stock\n");
+    for (int i = 0; i < fcount; i++) {
+        printf("%d | %s | %.2f | %d\n", filtered[i].id, filtered[i].brand, filtered[i].price, filtered[i].stock);
+    }
+
+    int id, qty;
+    printf("Enter the ID of the product you want to add to your cart (0 to return):\n");
+    scanf("%d", &id);
+    if (id <= 0) return;
+    
+    printf("Enter the quantity of the product you require:\n");
+    scanf("%d", &qty);
+    addtocart(id, qty);
+}
+    
+void DisplayProductsManager(){
+    char categories[20][50];
+    int count=noofunicate(categories);
+    printf("\n---- Categories ----\n");
+    for(int i=0;i<count;i++){
+        printf("%d. %s\n",i+1,categories[i]);
+    }
+    int choice;
+    printf("enter your preffered category( 0 to exit):\n");
+    scanf("%d",&choice);
+    getchar();
+
+    if(choice<=0 || choice>count){
         return;
     }
-    else{
-        printf("Enter the quantity of the product you require:\n");
-        scanf("%d",&qty);
-        addtocart(id,qty);
+
+    char *selected=categories[choice-1];
+    product filtered[50];
+    int fcount = 0;
+
+    for (int i = 0; i < totalproducts; i++) {
+        if (strcmp(products[i].category, selected) == 0) {
+            filtered[fcount++] = products[i];
+        }
     }
+
+    int sort_choice;
+    printf("Sort by: 1. Price  2. Stock  (Any other key for no sorting): ");
+    scanf("%d", &sort_choice);
+    if (sort_choice == 1 || sort_choice == 2) {
+        sort_products(filtered, fcount, sort_choice == 1);
     }
+
+    printf("\n--- %s Products ---\n",selected);
+    printf("ID | Brand | Price | Stock\n");
+    for (int i = 0; i < fcount; i++) {
+        printf("%d | %s | %.2f | %d\n", filtered[i].id, filtered[i].brand, filtered[i].price, filtered[i].stock);
+    }
+
+    int c;
+    printf("Do you want to add a product? (1 if yes and anything else for no)\n");
+    scanf("%d", &c);
+    if (c == 1) {
+        Addproduct("products_50.csv");
+    }
+}
+
+void sort_products(product *arr, int n, int by_price) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            int condition = by_price ? (arr[j].price > arr[j + 1].price)
+                                     : (arr[j].stock > arr[j + 1].stock);
+            if (condition) {
+                product temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
 
 void SearchID(){
     int id;
@@ -199,6 +292,65 @@ void SearchID(){
     
 }
 
+void Addproduct(const char * filename){
+    FILE *file=fopen(filename,"a");
+    if (file == NULL) {
+        perror("Unable to open file");
+        exit(0);
+    }
+    char prod[MAX_LINE_LENGTH];
+    printf("Enter the details of the product you want to add in the format\nID,Category,Brand,Price,Stock\n");
+    scanf("%s",prod);
+    fprintf(file,prod);
+    fclose(file);
+    printf("Product added!\n");
+    return;
+}
+
+void Login(){
+    char pass[50];
+    printf("Enter the Manager Password(no spaces)\n");
+    scanf("%s",pass);
+    
+    if (strcmp(pass,"beststore")==0){
+        int choice=1000;
+        while(choice){
+
+        printf("\n-Hello manager!--------\n");
+        printf("1. View inventory\n");
+        printf("2. Search by ID\n");
+        printf("3. Add products\n");
+        printf("4. exit\n");
+
+        scanf("%d",&choice);
+        getchar();
+
+        switch(choice){
+            case(1):
+                DisplayProductsManager();
+                break;
+            case(2):
+                SearchID();
+                break;
+            case(3):
+                Addproduct("products_50.csv");
+                break;
+            case(4):
+                return;
+            default:
+                printf("invalid choice\n");
+            
+        }
+
+    }
+    }
+    else{
+        printf("wrong password\n");
+        return;
+    }
+    
+}
+
 void exits(){
     printf("Thank you for shopping! Please visit us again\n");
     exit(0);
@@ -210,38 +362,39 @@ void MainMenu(){
     while(choice){
         
         printf("\n----SuperMarket Billing System----\n");
-        printf("1. Cart and Billing\n");
-        printf("2. Products\n"); 
-        printf("3. Search by ID\n");
-        printf("4. Exit\n");
+        printf("1. Products\n"); 
+        printf("2. Search by ID\n");
+        printf("3. Cart and Billing\n");
+        printf("4. View offers\n");
+        printf("5. Exit\n");
+        printf("6. Login as Manager\n");
         printf("Enter your choice:\n");
-
+        
         scanf("%d",&choice);
         getchar();
 
         switch(choice){
-            case(1):
+            case(3):
                 OpenCart();
                 break;
-            case(2):
+            case(1):
                 DisplayProducts();
                 break;
-            case(3):
+            case(2):
                 SearchID();
                 break;
-            case(4):
+            case(5):
                 exits();
+                break;
+            case(4):
+                printf("No offers yet!\n");
+                break;
+            case(6):
+                Login();
                 break;
             default:
                 printf("Invalid choice, enter another\n");
 
         }
     }
-}
-
-int main(){
-    totalproducts= LoadItems("products_50.csv");
-    MainMenu();
-
-    return 0;
 }
